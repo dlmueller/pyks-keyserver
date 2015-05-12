@@ -127,7 +127,7 @@ def iter_packet_sections(keyAsc, verbose = False) :
     @rtype: generator[(int, int, str)]
     """
     asciiArmor = keyAsc
-    ad = pgpdump.AsciiData(keyAsc)
+    ad = pgpdump.AsciiData(keyAsc) # may raise IndexError if keyAsc is too short!
     keyBytes = ascii_unarmor(asciiArmor)
     offset = 0
     for i, mainp in enumerate(ad.packets()) :

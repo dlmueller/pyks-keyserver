@@ -547,38 +547,14 @@ def execute_operation_get(certDB, searchPattern, options) :
             mimeType = 'text/html'
         else :
             mimeType = 'text/plain'
-        buf = StringIO.StringIO()
-        keyBytes = openpgp.ascii_unarmor(asciiArmor)
-        sectionOffsets = []
-        backgroundColors = ["khaki",
-                            "LightBlue",
-                            "LightSalmon",
-                            "MediumAquaMarine",
-                            "LightPink",
-                            "LightSteelBlue",
-                            "LightBlue",
-                            ]
-        meaning2color = {} # meaning -> bgcolor
-        packetSections = openpgp.iter_packet_sections(asciiArmor)
-        for i, (sectionStart, sectionEnd, meaning) in enumerate(packetSections) :
-            try :
-                bgcolor = meaning2color[meaning]
-            except KeyError :
-                bgcolor = backgroundColors[i % len(backgroundColors)]
-                meaning2color[meaning] = bgcolor
-            spanAttributes = {'style' : '"background-color:%s"' % (bgcolor,),
-                              'title' : '"%s"' % (meaning,)}
-            spanAttributes['title'] = '"%s"' % (meaning,)
-            sectionOffsets.append((sectionStart, sectionEnd, spanAttributes))
-        sectionOffsets.sort()
-        hexview.hexdump(keyBytes, outstream = buf, as_html = as_html, sectionOffsets = sectionOffsets)
         content = ""
-        if as_html :
+        if as_html:
             content += "<html><body>\n"
-            content += "<pre>\n"
-        content += buf.getvalue()
-        if as_html :
-            content += "\n</pre>\n"
+        if len(asciiArmor) < 10 :
+            content += "<b>No data</b>"
+        else :
+            content += _generateHexView(asciiArmor, as_html)
+        if as_html:
             content += "</body></html>\n"
     else :
         mimeType = 'text/plain'
@@ -597,6 +573,42 @@ def execute_operation_get(certDB, searchPattern, options) :
 #        content += "%s %s %s" % (row[0], row[1], row[2])
 
     return content, mimeType
+
+def _generateHexView(asciiArmor, as_html):
+    buf = StringIO.StringIO()
+    keyBytes = openpgp.ascii_unarmor(asciiArmor)
+    sectionOffsets = []
+    backgroundColors = ["khaki",
+        "LightBlue",
+        "LightSalmon",
+        "MediumAquaMarine",
+        "LightPink",
+        "LightSteelBlue",
+        "LightBlue",
+        ]
+    meaning2color = {} # meaning -> bgcolor
+    packetSections = openpgp.iter_packet_sections(asciiArmor)
+    for i, (sectionStart, sectionEnd, meaning) in enumerate(packetSections):
+        try:
+            bgcolor = meaning2color[meaning]
+        except KeyError:
+            bgcolor = backgroundColors[i % len(backgroundColors)]
+            meaning2color[meaning] = bgcolor
+        spanAttributes = {'style':'"background-color:%s"' % (bgcolor,),
+            'title':'"%s"' % (meaning,)}
+        spanAttributes['title'] = '"%s"' % (meaning,)
+        sectionOffsets.append((sectionStart, sectionEnd, spanAttributes))
+
+    sectionOffsets.sort()
+    hexview.hexdump(keyBytes, outstream = buf, as_html = as_html, sectionOffsets = sectionOffsets)
+    content = ""
+    if as_html:
+        content += "<pre>\n"
+    content += buf.getvalue()
+    if as_html:
+        content += "\n</pre>\n"
+    return content
+
 
 def _iter_get_lines(certDB, searchPattern, options):
     #cert = certDB.getTestCertificate()
