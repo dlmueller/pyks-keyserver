@@ -1,0 +1,91 @@
+﻿{% extends "layout.html" %}
+{% block title %}PyKS - Roadmap{% endblock %}
+{% block navbar_roadmap_active %}class="active"{% endblock %}
+{% block content %}
+
+<h1>{{ self.title() }}</h1>
+
+<h2>Big Picture</h2>
+
+<img src="static/images/current_pki.png" class="floatleft" alt="Current PKI" />
+
+<img src="static/images/proposed_pki.png" class="floatright" alt="Proposed PKI" />
+
+<p>
+The current PKI for OpenPGP is mainly based on Key Servers (<b>KS</b>) distributed across
+the internet that synchronize their databasis with some protocols.
+Phil Pennock gives an excellent and quite up-to-date
+<a href="http://people.spodhuis.org/phil.pennock/pgp-keyservers">Overview about OpenPGP Key Servers</a>.
+You OpenPGP client (<b>C</b>) connects to one of them using the
+<a href=""></a>
+Synchronized :
+Your client within your Local Area Network (LAN) contacts a Public Key Server (PKS)
+in the internet (Wide Area Network, WAN):</p>
+
+<p>
+With PyKS I propose an extension to the existing Public Key Infrastructure (PKI)
+that incorporates some answers to current threats that are now realized by many
+users not just the "paranoid" ones.
+
+Therefore I divided the <b>KS</b> component into a 
+local key server <b>LKS</b>
+and a remote key server <b>RKS</b>.
+</p>
+
+<div style="clear:both;"></div>
+
+<h2>Roadmap</h2>
+
+<div id="flexCols">
+
+<div class="cbox">
+
+<p><img src="static/images/step1.png" alt="Step 1 - LKS"  class="floatright" />
+
+<h3>Step 1 - Lokal Key Server (LKS)</h3>
+
+First I will offer a local HKP key server that can be used with
+GnuPG and Thunderbird/Enigmail.
+This could be used as a local key server for small teams or
+organizations (experimental!) that do not want to publish their
+keys due to some of the reasons mentioned in my 
+<a href="../motivation">motivation<a>.
+Furthermore this part could be used to implement some heuristics
+to detect manipulated keys 
+(see <a href="../related_work">Ralf Sendereks work</a>).
+Currently I'm working
+</p>
+
+
+</div>
+
+<div class="cbox">
+
+<img src="static/images/step2.png" alt="Step 2 - LKS to RKS" class="floatright" />
+
+<h3>Step 2 - Lokal to Remote Key Server</h3>
+
+<p>
+In the next step I will built a second server that will speak
+a flavour of HKP but does only store encrypted public key certificates
+and hides the real user identities and key fingerprints by hashing.
+That part will be implemented in Python/sqlite in the first place.
+After that I might also implement a PHP/mysql version.
+That would allow the deployment onto commonly configured webspace. 
+</p>
+
+</div>
+
+<div class="cbox">
+
+<img src="static/images/step3.png" alt="Step 3 - RKS to RKS" class="floatright" />
+<h3>Step 3 - Synchronizing of Remote Key Servers</h3>
+
+<p>
+Finally there should be a mechanism to synchronize the databases
+distributed across the internet.
+</p>
+</div>
+</div>
+
+{% endblock %}

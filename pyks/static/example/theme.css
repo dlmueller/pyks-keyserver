@@ -1,0 +1,55 @@
+﻿body {
+  padding-top: 70px;
+  padding-bottom: 30px;
+}
+
+.theme-dropdown .dropdown-menu {
+  position: static;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.theme-showcase > p > .btn {
+  margin: 5px 0;
+}
+
+.theme-showcase .navbar .container {
+  width: auto;
+}
+
+/*
+Zum Ankleben der Bilder an der linken bzw. rechten Seite
+*/
+.floatright {
+  float: right; 
+  margin: 0 0 10px 10px;
+  border: 1px solid #666;
+  padding: 2px;
+}
+
+.floatleft { 
+  float: left; 
+  margin: 10px 10px 0 0;
+  border: 1px solid #666;
+  padding: 2px;
+}
+
+.clear:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/*
+CSS3 
+*/
+#flexCols {
+  display: flex;
+  flex-direction: column;
+}
+
+.cbox { 
+  padding: 4px; 
+  background: lavenderblush;
+  margin: 1em 0 0 0; /* top */
+}

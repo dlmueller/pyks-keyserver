@@ -1,0 +1,52 @@
+﻿{% extends "layout.html" %}
+{% block title %}Related Work{% endblock %}
+{% block navbar_relatedwork_active %}class="active"{% endblock %}
+{% block content %}
+
+<h1>{{ self.title() }}</h1>
+
+
+<h2>Related Work</h2>
+<dl>
+<dt>parcimonie.sh</dt>
+<dd>https://github.com/EtiennePerot/parcimonie.sh</dd>
+<dd>parcimonie.sh refreshes individual keys in your GnuPG keyring at randomized intervals. Each key is refreshed over a unique, single-use Tor circuit.
+
+Unlike the original Parcimonie, parcimonie.sh guarantees that each key refresh happens over a unique Tor circuit even when multiple refreshes happen at the same time. (How?)</dd>
+
+<h2>Overiews and Specifications</h2>
+
+<p>Phil Pennock gives an excellent <a href="http://people.spodhuis.org/phil.pennock/pgp-keyservers">OpenPGP Key Server Overview</a>.</p>
+
+<p>Ralf Senderek writes about The Curse of Additional Decryption Keys (ADK) and
+<a href="http://senderek.ie/research/security/key-experiments.html">How PGP Deals With Manipulated Keys</a>
+(August 2000) along with
+<a href="http://senderek.ie/research/security/doc/personal-response.html">Philip Zimmermann's personal response to the problem</a>.
+
+<blockquote>
+Different versions of PGP show considerably different reactions when being
+confronted with public keys which have been subsequently manipulated.
+Especially a subsequent contamination of a public key with another person's key
+will not be noticed and rejected if you use newer versions of PGP, but will be
+used to produce encrypted messages which can be read in plaintext by everyone
+who has the secret key corresponding to the key which was smuggled into the original one.
+This manipulation will not be detected when using some newer versions of PGP and
+will not be noticed until users are going to have a detailed look at the bytes of
+the manipulated keys. This study helps to understand this threat, to find out
+experimentally how a specific version of PGP reacts, and to avoid being cheated
+with manipulated keys. 
+</blockquote>
+</p>
+
+<p>X Koller about <a href="http://www.edvsz.fh-osnabrueck.de/fileadmin/user/koller/dokumentation/intern/kommunikation/PGP/pgp02c.html">Key Escrow (german)</a>
+in PGP (contains more detailes about Additional Decryption Keys).
+<blockquote>
+Mit PGP 5 wurde eine neue Funktion eingeführt, die als CMR, "Corporate Message Recovery" bekannt wurde und eine breite Diskussion auslöste.
+CMR beschreibt die Möglichkeit, Dateien oder Nachrichten, die von einer Person an eine zweite verschlüsselt werden, gleichzeitig für eine dritte Person zu verschlüsseln, die sie also auch wieder entschlüsseln kann.
+</blockquote>
+</p>
+
+<p>Kai Raven offers a <a href="https://wiki.kairaven.de/open/krypto/gpg/gpganleitung">Introduction to GnuPG (german)</a>. 
+</p>
+
+{% endblock %}

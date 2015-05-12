@@ -1,0 +1,53 @@
+{% extends "layout_without_navbar.html" %}
+{% block title %}PyKS - Stats{% endblock %}
+{% block content %}
+
+<h1>{{ self.title() }}</h1>
+
+<div id="topmenu">
+	<ul>
+		<li><span class="menu-label">OpenPGP:</span></li>
+		<li><a href="/lookup">Search</a></li>
+		<li><a href="http://hockeypuck.gazzang.net:11371/openpgp/add">Add</a></li>
+		<li><a href="http://hockeypuck.gazzang.net:11371/pks/lookup?op=stats">Stats</a></li>
+	</ul>
+</div>
+</div>
+
+<div id="main">
+
+
+<h2>Server Status</h2>
+<table>
+<tbody><tr><th>Hostname:</th><td>{{ hostname }}</td></tr>
+<tr><th>Port:</th><td>{{ port }}</td></tr>
+<tr><th>Version:</th><td>{{ version }}</td></tr>
+</tbody></table>
+
+<h2>Statistics</h2>
+<table>
+<tbody><tr><th>Total number of keys:</th><td>{{ totalNumberOfKeys }}</td></tr>
+</tbody></table>
+
+<h3>Keys loaded in the last 24 hours</h3>
+<table>
+<tbody><tr><th>Hour</th><th>New</th><th>Updated</th></tr>
+{% for item in last24hUpdates %}
+<tr><td>{{ item.date }}</td><td>{{ item.newCount }}</td><td>{{ item.updateCount }}</td></tr>
+{% else %}
+<tr><td>none</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+{% endfor %}
+</tbody></table>
+
+last7dUpdates 
+<h3>Keys loaded in the last 7 days</h3>
+<table>
+<tbody><tr><th>Day</th><th>New</th><th>Updated</th></tr>
+{% for item in last7dUpdates %}
+<tr><td>{{ item.date }}</td><td>{{ item.newCount }}</td><td>{{ item.updateCount }}</td></tr>
+{% else %}
+<tr><td>none</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+{% endfor %}
+</tbody></table>
+
+{% endblock %}

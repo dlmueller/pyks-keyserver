@@ -1,0 +1,735 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head profile="http://dublincore.org/documents/2008/08/04/dc-html/">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="index,follow">
+    <meta name="creator" content="rfcmarkup version 1.109">
+    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.Identifier" content="urn:ietf:id:shaw-openpgp-hkp">
+<meta name="DC.Creator" content="David Shaw &lt;dshaw@jabberwocky.com&gt;">
+<meta name="DC.Date.Issued" content="2003-03-20">
+<meta name="DC.Title" content="The OpenPGP HTTP Keyserver Protocol (HKP)">
+
+    <link rel="icon" href="http://tools.ietf.org/images/id.png" type="image/png">
+    <link rel="shortcut icon" href="http://tools.ietf.org/images/id.png" type="image/png">
+    <title>draft-shaw-openpgp-hkp-00 - The OpenPGP HTTP Keyserver Protocol (HKP)</title>
+    
+    
+    <style type="text/css">
+	body {
+	    margin: 0px 8px;
+            font-size: 1em;
+	}
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+	    font-weight: bold;
+            line-height: 0pt;
+            display: inline;
+            white-space: pre;
+            font-family: monospace;
+            font-size: 1em;
+	    font-weight: bold;
+        }
+        pre {
+            font-size: 1em;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+	.pre {
+	    white-space: pre;
+	    font-family: monospace;
+	}
+	.header{
+	    font-weight: bold;
+	}
+        .newpage {
+            page-break-before: always;
+        }
+        .invisible {
+            text-decoration: none;
+            color: white;
+        }
+        a.selflink {
+          color: black;
+          text-decoration: none;
+        }
+        @media print {
+            body {
+                font-family: monospace;
+                font-size: 10.5pt;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                font-size: 1em;
+            }
+        
+            a:link, a:visited {
+                color: inherit;
+                text-decoration: none;
+            }
+            .noprint {
+                display: none;
+            }
+        }
+	@media screen {
+	    .grey, .grey a:link, .grey a:visited {
+		color: #777;
+	    }
+            .docinfo {
+                background-color: #EEE;
+            }
+            .top {
+                border-top: 7px solid #EEE;
+            }
+            .bgwhite  { background-color: white; }
+            .bgred    { background-color: #F44; }
+            .bggrey   { background-color: #666; }
+            .bgbrown  { background-color: #840; }            
+            .bgorange { background-color: #FA0; }
+            .bgyellow { background-color: #EE0; }
+            .bgmagenta{ background-color: #F4F; }
+            .bgblue   { background-color: #66F; }
+            .bgcyan   { background-color: #4DD; }
+            .bggreen  { background-color: #4F4; }
+
+            .legend   { font-size: 90%; }
+            .cplate   { font-size: 70%; border: solid grey 1px; }
+	}
+    </style>
+    <!--[if IE]>
+    <style>
+    body {
+       font-size: 13px;
+       margin: 10px 10px;
+    }
+    </style>
+    <![endif]-->
+
+    <script type="text/javascript"><!--
+    function addHeaderTags() {
+	var spans = document.getElementsByTagName("span");
+	for (var i=0; i < spans.length; i++) {
+	    var elem = spans[i];
+	    if (elem) {
+		var level = elem.getAttribute("class");
+                if (level == "h1" || level == "h2" || level == "h3" || level == "h4" || level == "h5" || level == "h6") {
+                    elem.innerHTML = "<"+level+">"+elem.innerHTML+"</"+level+">";		
+                }
+	    }
+	}
+    }
+    var legend_html = "Colour legend:<br />      <table>         <tr><td>Unknown:</td>                   <td><span class='cplate bgwhite'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Draft:</td>                     <td><span class='cplate bgred'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Informational:</td>             <td><span class='cplate bgorange'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Experimental:</td>              <td><span class='cplate bgyellow'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Best Common Practice:</td>      <td><span class='cplate bgmagenta'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Proposed Standard:</td>         <td><span class='cplate bgblue'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Draft Standard (old designation):</td> <td><span class='cplate bgcyan'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Internet Standard:</td>         <td><span class='cplate bggreen'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Historic:</td>                  <td><span class='cplate bggrey'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Obsolete:</td>                  <td><span class='cplate bgbrown'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>     </table>";
+    function showElem(id) {
+        var elem = document.getElementById(id);
+        elem.innerHTML = eval(id+"_html");
+        elem.style.visibility='visible';
+    }
+    function hideElem(id) {
+        var elem = document.getElementById(id);
+        elem.style.visibility='hidden';        
+        elem.innerHTML = "";
+    }
+    // -->
+    </script>
+</head>
+<body onload="addHeaderTags()">
+   <div style="height: 13px;">
+      <div onmouseover="this.style.cursor='pointer';" onclick="showElem('legend');" onmouseout="hideElem('legend')" style="height: 6px; position: absolute; cursor: pointer;" class="pre noprint docinfo bgred" title="Click for colour legend.">                                                                        </div>
+      <div id="legend" class="docinfo noprint pre legend" style="position:absolute; top: 4px; left: 4ex; visibility:hidden; background-color: white; padding: 4px 9px 5px 7px; border: solid #345 1px; " onmouseover="showElem('legend');" onmouseout="hideElem('legend');"></div>
+   </div>
+<span class="pre noprint docinfo top">[<a href="http://tools.ietf.org/html/" title="Document search and retrieval page">Docs</a>] [<a href="https://tools.ietf.org/id/draft-shaw-openpgp-hkp-00.txt" title="Plaintext version of this document">txt</a>|<a href="http://tools.ietf.org/pdf/draft-shaw-openpgp-hkp-00.txt" title="PDF version of this document">pdf</a>] [<a href="https://datatracker.ietf.org/doc/draft-shaw-openpgp-hkp" title="IESG Datatracker information for this document">Tracker</a>] [<a href="mailto:draft-shaw-openpgp-hkp@tools.ietf.org?subject=draft-shaw-openpgp-hkp%20" title="Send email to the document authors">Email</a>] [<a href="http://tools.ietf.org/idnits?url=https://tools.ietf.org/id/draft-shaw-openpgp-hkp-00.txt" title="Run an idnits check of this document">Nits</a>]                               </span><br>
+<span class="pre noprint docinfo">                                                                        </span><br>
+<span class="pre noprint docinfo">Versions: <a href="http://tools.ietf.org/html/draft-shaw-openpgp-hkp-00">00</a>                                                            </span><br>
+<span class="pre noprint docinfo">                                                                        </span><br>
+<pre>Internet-Draft                                                   D. Shaw
+Expires September 2003                                  Jabberwocky Tech
+                                                              March 2003
+
+               <span class="h1"><h1>The OpenPGP HTTP Keyserver Protocol (HKP)</h1></span>
+                     <span class="h1"><h1>draft-shaw-openpgp-hkp-00.txt</h1></span>
+
+Status of this Memo
+
+   This document is an Internet-Draft and is in full conformance with
+   all provisions of <a href="http://tools.ietf.org/html/rfc2026#section-10">Section&nbsp;10 of RFC2026</a>.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF), its areas, and its working groups.  Note that
+   other groups may also distribute working documents as
+   Internet-Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   The list of current Internet-Drafts can be accessed at
+   <a href="http://www.ietf.org/ietf/1id-abstracts.txt">http://www.ietf.org/ietf/1id-abstracts.txt</a>
+
+   The list of Internet-Draft Shadow Directories can be accessed at
+   <a href="http://www.ietf.org/shadow.html">http://www.ietf.org/shadow.html</a>.
+
+Abstract
+
+   This document specifies a series of conventions to implement an
+   OpenPGP keyserver using the Hypertext Transfer Protocol (HTTP).  As
+   this document is a codification and extension of a protocol that is
+   already in wide use, strict attention is paid to backward
+   compatibility with these existing implementations.
+
+Table of Contents
+
+       Status of this Memo ...................................... <a href="#page-1">1</a>
+       Abstract ................................................. <a href="#page-1">1</a>
+       Table of Contents ........................................ <a href="#page-1">1</a>
+   <a href="#section-1">1</a>.  Introduction ............................................. <a href="#page-2">2</a>
+       <a href="#section-1.1">1.1</a> Terms ................................................ <a href="#page-2">2</a>
+   <a href="#section-2">2</a>.  HKP and HTTP ............................................. <a href="#page-2">2</a>
+   <a href="#section-3">3</a>.  Requesting Data From A Keyserver ......................... <a href="#page-3">3</a>
+       <a href="#section-3.1">3.1</a> Basic Variables ...................................... <a href="#page-3">3</a>
+           <a href="#section-3.1.1">3.1.1</a> The "search" variable .......................... <a href="#page-3">3</a>
+                 <a href="#section-3.1.1.1">3.1.1.1</a> Key ID and V4 Fingerprint Searches ..... <a href="#page-3">3</a>
+                 <a href="#section-3.1.1.2">3.1.1.2</a> V3 Fingerprint Searches ................ <a href="#page-3">3</a>
+                 <a href="#section-3.1.1.3">3.1.1.3</a> Text Searches .......................... <a href="#page-4">4</a>
+           <a href="#section-3.1.2">3.1.2</a> The "op" (operation) Variable .................. <a href="#page-4">4</a>
+                 <a href="#section-3.1.2.1">3.1.2.1</a> The "get" operation .................... <a href="#page-4">4</a>
+                 <a href="#section-3.1.2.2">3.1.2.2</a> The "index" operation .................. <a href="#page-4">4</a>
+                 <a href="#section-3.1.2.3">3.1.2.3</a> The "vindex" (verbose index) operation.. <a href="#page-4">4</a>
+                 <a href="#section-3.1.2.4">3.1.2.4</a> Other operations ....................... <a href="#page-5">5</a>
+
+<span class="grey">Shaw                                                            [Page 1]</span>
+</pre><!--NewPage--><pre class="newpage"><a name="page-2" id="page-2" href="#page-2" class="invisible"> </a>
+<span class="grey">Internet-Draft        OpenPGP HTTP Keyserver Protocol         March 2003</span>
+
+       <a href="#section-3.2">3.2</a> Modifier Variables ................................... <a href="#page-5">5</a>
+           <a href="#section-3.2.1">3.2.1</a> The "options" variable ......................... <a href="#page-5">5</a>
+           <a href="#section-3.2.2">3.2.2</a> The "fingerprint" variable ..................... <a href="#page-5">5</a>
+           <a href="#section-3.2.3">3.2.3</a> The "exact" variable ........................... <a href="#page-6">6</a>
+           <a href="#section-3.2.3">3.2.3</a> Other variables ................................ <a href="#page-6">6</a>
+       <a href="#section-3.4">3.4</a> Request Examples ..................................... <a href="#page-6">6</a>
+   <a href="#section-4">4</a>.  Submitting Keys To A Keyserver ........................... <a href="#page-6">6</a>
+   <a href="#section-5">5</a>.  Output Formats ........................................... <a href="#page-6">6</a>
+       <a href="#section-5.1">5.1</a> Machine Readable Output .............................. <a href="#page-7">7</a>
+       <a href="#section-5.2">5.2</a> Machine Readable Indexes ............................. <a href="#page-7">7</a>
+   <a href="#section-6">6</a>.  Extended Status Codes .................................... <a href="#page-8">8</a>
+   <a href="#section-7">7</a>.  Locating a HKP Keyserver ................................. <a href="#page-9">9</a>
+   <a href="#section-8">8</a>.  Security Considerations .................................. <a href="#page-9">9</a>
+   <a href="#section-9">9</a>.  IANA Considerations ...................................... <a href="#page-9">9</a>
+   <a href="#section-10">10</a>. Normative References ..................................... <a href="#page-10">10</a>
+   <a href="#section-11">11</a>. Author's Address ......................................... <a href="#page-10">10</a>
+
+<span class="h2"><h2><a class="selflink" name="section-1" href="#section-1">1</a>. Introduction</h2></span>
+
+   For ease of use, public key cryptography requires a key distribution
+   system.  For many years, the most commonly used system has been a key
+   server - a server that stores public keys and can be searched for a
+   given key.  The HTTP Keyserver Protocol is a OpenPGP keyserver
+   implemented using HTTP.
+
+<span class="h3"><h3><a class="selflink" name="section-1.1" href="#section-1.1">1.1</a>. Terms</h3></span>
+
+   This document uses the terms "MUST", "SHOULD" and "MAY" as defined in
+   <a href="http://tools.ietf.org/html/rfc2119">RFC-2119</a> [<a href="#ref-1" title="&quot;Key words for use in RFCs to Indicate Requirement Level&quot;">1</a>], along with the negated forms of those terms.
+
+<span class="h2"><h2><a class="selflink" name="section-2" href="#section-2">2</a>. HKP and HTTP</h2></span>
+
+   As HKP is implemented over HTTP, everything in <a href="http://tools.ietf.org/html/rfc1945">RFC-1945</a> [<a href="#ref-2" title="&quot;Hypertext Transfer Protocol 1.0&quot;">2</a>] applies
+   to HKP as well, and HKP error codes are the same as the ones used in
+   HTTP.  In order to give as much information to the client about error
+   conditions, is good practice to return the most specific error code
+   possible: for example, returning 404 ("Not Found") rather than 400
+   ("Bad Request") when a key is not found.
+
+   This document gives suggested HTTP error codes for several common
+   situations.  Note that these are only suggestions, and
+   implementations may have good reasons (such as not revealing the
+   reason why a request failed) for using other error codes.
+
+   Due the very large deployment of HKP clients based on HTTP version
+   1.0, HKP keyservers MUST support HTTP 1.0.  HKP keyservers MAY
+   additionally support other HTTP versions.
+
+   [ dshaw : I expect this to be controversial, but we've got tons of
+   deployed code that only works with 1.0.  I'd be willing to discuss
+   removing this MUST or make it a SHOULD and add a "implementation
+   notes" section pointing out the problem instead. ]
+
+   By convention and history, HKP uses HTTP on TCP port 11371.  It has
+
+<span class="grey">Shaw                                                            [Page 2]</span>
+</pre><!--NewPage--><pre class="newpage"><a name="page-3" id="page-3" href="#page-3" class="invisible"> </a>
+<span class="grey">Internet-Draft        OpenPGP HTTP Keyserver Protocol         March 2003</span>
+
+   been suggested by some that for reasons of maximum compatibility
+   with firewalls and filtering HTTP proxies, it is better to use the
+   standard HTTP port (TCP port 80).  See <a href="#section-7">section 7</a>, Locating a HKP
+   Keyserver for an automated way for clients to discover the correct
+   port.
+
+<span class="h2"><h2><a class="selflink" name="section-3" href="#section-3">3</a>. Requesting Data From A Keyserver</h2></span>
+
+   Keyserver requests are done via a HTTP GET URL that encodes the
+   request within it.  Specifically, the abs_path (see [<a href="#ref-2" title="&quot;Hypertext Transfer Protocol 1.0&quot;">2</a>], <a href="#section-3.2">section</a>
+   <a href="#section-3.2">3.2</a>) is built up of the base request "/pks/lookup", followed by any
+   variables.  Arguments are passed through the usual means as
+   specified in [<a href="#ref-3" title="&quot;Hypertext Markup Language - 2.0&quot;">3</a>], section 8.2.2.  The variables may be given in any
+   order.  Keyservers MUST ignore any unknown variables.
+
+<span class="h3"><h3><a class="selflink" name="section-3.1" href="#section-3.1">3.1</a>. Basic Variables</h3></span>
+
+   All HKP requests contain the "op" (operation) and "search"
+   variables.  The "op" variable determines what operation the
+   keyserver will take, and the "search" variable determines that keys
+   are operated on.
+
+<span class="h4"><h4><a class="selflink" name="section-3.1.1" href="#section-3.1.1">3.1.1</a>. The "search" Variable</h4></span>
+
+   The search variable contains arbitrary text encoded as usual for a
+   HTTP URL.  This text may represent the key ID of the key being
+   sought or some text from a user ID on the key being sought.
+
+   If any particular type of searching is not supported, the keyserver
+   should return an appropriate HTTP error code such as 501 ("Not
+   Implemented").  The server MUST NOT return an error code (such as
+   404 ("Not Found")) that could be mistaken by the client for a valid
+   response.
+
+<span class="h5"><h5><a class="selflink" name="section-3.1.1.1" href="#section-3.1.1.1">3.1.1.1</a>. Key ID and V4 Fingerprint Searches</h5></span>
+
+   If a key is being sought by its key ID, the key ID string is
+   prefixed with an "0x" to indicate a hexadecimal number.  Key ID
+   strings may be 8 digits (32-bit key ID), 16 digits (64-bit key ID),
+   32 digits (version 3 fingerprint), or 40 digits (version 4
+   fingerprint).  The hexadecimal digits are not case sensitive.
+
+   A keyserver that allows searching by keyid MUST accept the 160-bit
+   version 4 fingerprint, 64-bit key IDs, and 32-bit key IDs in the
+   "search" variable.  Note this does not mean that the keyserver will
+   actually use the full length of the request in the search, as it
+   may internally create a 32-bit or 64-bit key ID from a version 4
+   fingerprint (by taking the low-order 32 or 64 bits respectively),
+   or a 32-bit key ID from a 64-bit key ID (by taking low-order 32
+   bits).  That said, a keyserver SHOULD use at least 64 bits of the
+   key ID if available.
+
+<span class="h5"><h5><a class="selflink" name="section-3.1.1.2" href="#section-3.1.1.2">3.1.1.2</a>. V3 Fingerprint Searches</h5></span>
+
+
+<span class="grey">Shaw                                                            [Page 3]</span>
+</pre><!--NewPage--><pre class="newpage"><a name="page-4" id="page-4" href="#page-4" class="invisible"> </a>
+<span class="grey">Internet-Draft        OpenPGP HTTP Keyserver Protocol         March 2003</span>
+
+   The 128-bit version 3 fingerprint is represented by a leading "0x",
+   followed by 32 case-insensitive hexadecimal digits.  Note that v3
+   fingerprints are treated differently and not grouped with keyid or
+   v4 fingerprint searches as it is not possible to calculate a 64-bit
+   or 32-bit keyid from a v3 fingerprint.
+
+<span class="h5"><h5><a class="selflink" name="section-3.1.1.3" href="#section-3.1.1.3">3.1.1.3</a>. Text Searches</h5></span>
+
+   How a keyserver handles a textual search is implementation defined.
+   See also the definition of the "exact" variable for a method to
+   give additional instructions to the server on how the search is to
+   be executed.
+
+<span class="h4"><h4><a class="selflink" name="section-3.1.2" href="#section-3.1.2">3.1.2</a>. The "op" (operation) Variable</h4></span>
+
+   The op variable specifies the operation to be performed on the
+   keyserver.  The op variable is generally used with the "search"
+   variable to specify the keys that should be operated on.
+
+<span class="h5"><h5><a class="selflink" name="section-3.1.2.1" href="#section-3.1.2.1">3.1.2.1</a>. The "get" operation</h5></span>
+
+   The "get" operation requests keys from the keyserver.  A string that
+   specifies which key(s) to return is provided in the "search"
+   variable.
+
+   The response to a successful "get" request is a HTTP document
+   containing a keyring as specified in <a href="http://tools.ietf.org/html/rfc2440">RFC-2440</a> [<a href="#ref-4" title="&quot;OpenPGP Message Format&quot;">4</a>], section 11.1, and
+   ASCII armored as specified in <a href="#section-6.2">section 6.2</a>.
+
+   The response may be wrapped in any HTML or other text desired, except
+   that the actual key data consisting of an initial line break, the
+   "-----BEGIN PGP PUBLIC KEY BLOCK-----" header, the armored key data
+   itself, the "-----END PGP PUBLIC KEY BLOCK-----" header, and a final
+   line break MUST NOT be modified from the form specified in [<a href="#ref-4" title="&quot;OpenPGP Message Format&quot;">4</a>].
+
+   If no keys match the request, the keyserver should return an
+   appropriate HTTP error code such as 404 ("Not Found").
+
+<span class="h5"><h5><a class="selflink" name="section-3.1.2.2" href="#section-3.1.2.2">3.1.2.2</a>. The "index" Operation</h5></span>
+
+   The "index" operation requests a list of keys on the keyserver that
+   match the text or key ID in the "search" variable.  Historically, the
+   "index" operation returned a human readable HTML document containing
+   links for each found key, but this is not required.
+
+   If the "index" operation is not supported, the keyserver should
+   return an appropriate HTTP error code such as 501 ("Not
+   Implemented").
+
+<span class="h5"><h5><a class="selflink" name="section-3.1.2.3" href="#section-3.1.2.3">3.1.2.3</a>. The "vindex" (verbose index) Operation</h5></span>
+
+   The "vindex" operation is similar to "index" in that it provides a
+   list of keys on the keyserver that match the text of key ID in the
+   "search" variable.  Historically, a "vindex" response was the same as
+
+<span class="grey">Shaw                                                            [Page 4]</span>
+</pre><!--NewPage--><pre class="newpage"><a name="page-5" id="page-5" href="#page-5" class="invisible"> </a>
+<span class="grey">Internet-Draft        OpenPGP HTTP Keyserver Protocol         March 2003</span>
+
+   "index" with the addition of showing the signatures on each key, but
+   this is not required.
+
+   If the "vindex" operation is not supported, the keyserver should
+   return an appropriate HTTP error code such as 501 ("Not
+   Implemented").
+
+<span class="h5"><h5><a class="selflink" name="section-3.1.2.4" href="#section-3.1.2.4">3.1.2.4</a>. Other Operations</h5></span>
+
+   Other site-specific or nonstandard operations can be indicated by
+   prefixing the operation name with the string "x-".
+
+<span class="h3"><h3><a class="selflink" name="section-3.2" href="#section-3.2">3.2</a>. Modifier Variables</h3></span>
+
+   These variables are used to modify basic requests.
+
+<span class="h4"><h4><a class="selflink" name="section-3.2.1" href="#section-3.2.1">3.2.1</a>. The "options" Variable</h4></span>
+
+   This variable takes one or more arguments, separated by commas.
+   These are used to modify the behavior of the keyserver on a
+   per-request basis.
+
+<span class="h5"><h5><a class="selflink" name="section-3.2.1.1" href="#section-3.2.1.1">3.2.1.1</a>. The "mr" (Machine Readable) Option</h5></span>
+
+   The machine readable option instructs the server that a program
+   (rather than a person) is making the request, so the output may be
+   customized for that use.  See <a href="#section-5">Section 5</a>, Output Formats for the
+   specific details of machine readable output.
+
+<span class="h5"><h5><a class="selflink" name="section-3.2.1.2" href="#section-3.2.1.2">3.2.1.2</a>. The "nm" (No Modification) Option</h5></span>
+
+   As keyservers may modify submitted keys to suit a particular
+   policy, this option is used to inform the keyserver that the
+   submitter would rather have the submission fail completely then
+   have the submitted key(s) modified.  An example of this would be a
+   keyserver that does not accept user IDs with an email address
+   outside of the local domain.  If such a key was submitted, the
+   keyserver could trim any noncompliant user IDs before accepting the
+   key.  If this option was set, then the key submission would fail.
+
+<span class="h5"><h5><a class="selflink" name="section-3.2.1.3" href="#section-3.2.1.3">3.2.1.3</a>. Other Options</h5></span>
+
+   Other site-specific or nonstandard options can be indicated by
+   prefixing the option name with the string "x-".
+
+<span class="h4"><h4><a class="selflink" name="section-3.2.2" href="#section-3.2.2">3.2.2</a>. The "fingerprint" Variable</h4></span>
+
+   This variable takes one argument: "on" or "off".  If present and
+   on, it instructs the server to provide the key fingerprint for each
+   key in an "index" or "vindex" operation.  This variable has no
+   effect on any other operation.  The exact format of the displayed
+   fingerprint, like the "index" and "vindex" operations themselves,
+   is implementation defined.
+
+
+<span class="grey">Shaw                                                            [Page 5]</span>
+</pre><!--NewPage--><pre class="newpage"><a name="page-6" id="page-6" href="#page-6" class="invisible"> </a>
+<span class="grey">Internet-Draft        OpenPGP HTTP Keyserver Protocol         March 2003</span>
+
+<span class="h4"><h4><a class="selflink" name="section-3.2.3" href="#section-3.2.3">3.2.3</a>. The "exact" Variable</h4></span>
+
+   This variable takes one argument: "on" or "off".  If present and
+   on, it instructs the server to search for an exact match for the
+   contents of the "search" variable.  The exact meaning of "exact
+   match" is implementation defined.
+
+<span class="h4"><h4><a class="selflink" name="section-3.2.3" href="#section-3.2.3">3.2.3</a>. Other Variables</h4></span>
+
+   Other site-specific or nonstandard variables can be indicated by
+   prefixing the variable name with the string "x-".
+
+<span class="h3"><h3><a class="selflink" name="section-3.4" href="#section-3.4">3.4</a>. Request Examples</h3></span>
+
+   Search for all keys containing the string "dshaw":
+     http://keys.example.com:11371/pks/lookup?search=dshaw&amp;op=index
+
+   Get key 0x99242560 (32-bit key ID):
+     http://keys.example.com:11371/pks/lookup?op=get&amp;search=0x99242560
+
+<span class="h2"><h2><a class="selflink" name="section-4" href="#section-4">4</a>. Submitting Keys To A Keyserver</h2></span>
+
+   Keyserver submissions are done via a HTTP POST URL.  Specifically,
+   the abs_path (see [<a href="#ref-2" title="&quot;Hypertext Transfer Protocol 1.0&quot;">2</a>], section 3.2) is set to "/pks/add", and the key
+   data is provided via HTTP POST as specified in [<a href="#ref-2" title="&quot;Hypertext Transfer Protocol 1.0&quot;">2</a>], section 8.3, and
+   [<a href="#ref-3" title="&quot;Hypertext Markup Language - 2.0&quot;">3</a>], section 8.2.3.
+
+   The body of the POST message contains a "keytext" variable which is
+   set to an ASCII armored keyring as specified in [<a href="#ref-4" title="&quot;OpenPGP Message Format&quot;">4</a>], sections <a href="#section-6.2">6.2</a>
+   and 11.1.  The ASCII armored keyring should also be urlencoded as
+   specified in [<a href="#ref-3" title="&quot;Hypertext Markup Language - 2.0&quot;">3</a>], section 8.2.1.  Note that more than one key may
+   be submitted in a single transaction.
+
+   There may also be an "options" variable, as specified in <a href="#section-3.2.1">section</a>
+   <a href="#section-3.2.1">3.2.1</a> above.
+
+   If a keyserver does not support adding keys via HTTP, then requests
+   to do so should return an appropriate HTTP error code, such as 403
+   ("Forbidden") if key submission has been disallowed, or 501 ("Not
+   Implemented") if the server does not support HTTP key submission.
+   The keyserver MUST NOT return an error code (such as 404 ("Not
+   Found")) that could be mistaken by the client for a valid response.
+
+<span class="h2"><h2><a class="selflink" name="section-5" href="#section-5">5</a>. Output Formats</h2></span>
+
+   HKP is intended for both human and programmatic use.  The "machine
+   readable" option is used to tailor the output for a given use.  In
+   general, the "human readable" output is implementation specific.
+   For interoperability, the "machine readable" output MUST carefully
+   follow the guidelines given here.
+
+   Note that there is an installed base of programs that do in fact
+   attempt to parse the human readable "index" format used in the pksd
+   keyserver.  Care should be taken with the choice of an "index" format
+
+<span class="grey">Shaw                                                            [Page 6]</span>
+</pre><!--NewPage--><pre class="newpage"><a name="page-7" id="page-7" href="#page-7" class="invisible"> </a>
+<span class="grey">Internet-Draft        OpenPGP HTTP Keyserver Protocol         March 2003</span>
+
+   if compatibility with these programs is desired.
+
+<span class="h3"><h3><a class="selflink" name="section-5.1" href="#section-5.1">5.1</a>. Machine Readable Output</h3></span>
+
+   When machine readable output is requested, several changes are made
+   to output:
+
+   - Key retrievals (op=get) do not contain any text aside from the
+     ASCII armored keyring.  The document is also sent to the user
+     using Content-Type: application/pgp-keys as specified in <a href="http://tools.ietf.org/html/rfc3156">RFC-3156</a>
+     [<a href="#ref-6" title="&quot;MIME Security with OpenPGP&quot;">6</a>].
+
+   - Key indexes (op=index) use the format specified in <a href="#section-5.2">Section 5.2</a>,
+     Machine Readable Indexes.
+
+<span class="h3"><h3><a class="selflink" name="section-5.2" href="#section-5.2">5.2</a>. Machine Readable Indexes</h3></span>
+
+   The machine readable index format is a list of records that can be
+   easily parsed by a machine.  The document is 7-bit clean, and as such
+   is sent with no encoding and Content-Type: text/plain.
+
+   The machine readable response begins with an optional information
+   line:
+
+   info:&lt;version&gt;:&lt;count&gt;
+
+      &lt;version&gt; = this is the version of this output format.
+                  Currently, this is the number 1.
+
+      &lt;count&gt; = the number of keys returned in this response.  Note
+                this is the number of keys, and not the number of
+                lines returned.  That is, it should match the number
+                of "pub:" lines returned.
+
+   If this optional line is not included, or the version information is
+   not supplied, the version number is assumed to be 1.
+
+   The key listings themselves are made up of several lines per key.
+   The first line specifies the primary key:
+
+   pub:&lt;keyid&gt;:&lt;algo&gt;:&lt;keylen&gt;:&lt;creationdate&gt;:&lt;expirationdate&gt;:&lt;flags&gt;
+
+      &lt;keyid&gt; = this is either the fingerprint or the key ID of the
+                key.  Either the 16-digit or 8-digit key IDs are
+                acceptable, but obviously the fingerprint is best.  A
+                keyserver should use the most specific of the key IDs
+                that it has available.  Since it is not possible to
+                calculate the key ID from a V3 key fingerprint, for V3
+                keys this should be either the 16-digit or 8-digit
+                key ID only.
+
+      &lt;algo&gt; = the algorithm number from [<a href="#ref-4" title="&quot;OpenPGP Message Format&quot;">4</a>].  (i.e. 1==RSA, 17==DSA,
+               etc).
+
+
+<span class="grey">Shaw                                                            [Page 7]</span>
+</pre><!--NewPage--><pre class="newpage"><a name="page-8" id="page-8" href="#page-8" class="invisible"> </a>
+<span class="grey">Internet-Draft        OpenPGP HTTP Keyserver Protocol         March 2003</span>
+
+      &lt;keylen&gt; = the key length (i.e. 1024, 2048, 4096, etc.)
+
+      &lt;creationdate&gt; = creation date of the key in standard <a href="http://tools.ietf.org/html/rfc2440">RFC-2440</a>
+                       [<a href="#ref-4" title="&quot;OpenPGP Message Format&quot;">4</a>] form (i.e. number of seconds since 1/1/1970
+                       UTC time)
+
+      &lt;expirationdate&gt; = expiration date of the key in standard
+                         <a href="http://tools.ietf.org/html/rfc2440">RFC-2440</a> [<a href="#ref-4" title="&quot;OpenPGP Message Format&quot;">4</a>] form (i.e. number of seconds
+                         since 1/1/1970 UTC time)
+
+      &lt;flags&gt; = letter codes to indicate details of the key, if any.
+                Flags may be in any order.  The meaning of "disabled"
+                is implementation-specific.  Note that individual
+                flags may be unimplemented, so the absence of a given
+                flag does not necessarily mean the absence of the
+                detail.
+
+          r == revoked
+          d == disabled
+          e == expired
+
+   Following the "pub" line are one or more "uid" lines to indicate user
+   IDs on the key:
+
+   uid:&lt;escaped uid string&gt;:&lt;creationdate&gt;:&lt;expirationdate&gt;:&lt;flags&gt;
+
+      &lt;escaped uid string&gt; = the user ID string, with HTTP %-escaping
+                             for anything that isn't 7-bit safe as
+                             well as for the ":" character.  Any other
+                             characters may be escaped, as desired.
+
+   creationdate, expirationdate, and flags mean the same here as in the
+   "pub" line.  The information is taken from the self-signature, if
+   any, and applies to the user ID in question, and not to the key as a
+   whole.
+
+   Note that empty fields are allowed.  For example, a key with no
+   expiration date would have the &lt;expirationdate&gt; field empty.  Also,
+   a keyserver that does not track a particular piece of information
+   may leave that field empty as well.  Colons for empty fields on the
+   end of each line may be left off, if desired.
+
+<span class="h2"><h2><a class="selflink" name="section-6" href="#section-6">6</a>. Extended Status Codes</h2></span>
+
+   As HKP is implemented over HTTP, when a status or error code needs
+   to be returned, the most appropriate HTTP code should be used.
+
+   Occasionally there is a need to express a condition that cannot be
+   expressed via the HTTP 1.0 status code list.  In these cases, an
+   additional HTTP header may be added to the response.  This
+   additional header is of the form "X-HKP-Status:" and is followed by
+   one of the following status codes:
+
+        xxx - Submitted key was altered to match keyserver policy.
+
+<span class="grey">Shaw                                                            [Page 8]</span>
+</pre><!--NewPage--><pre class="newpage"><a name="page-9" id="page-9" href="#page-9" class="invisible"> </a>
+<span class="grey">Internet-Draft        OpenPGP HTTP Keyserver Protocol         March 2003</span>
+
+        xxx - Submitted key was rejected as per keyserver policy.
+        xxx - The search resulted in more responses then the keyserver
+              was willing to return.
+
+<span class="h2"><h2><a class="selflink" name="section-7" href="#section-7">7</a>. Locating a HKP Keyserver</h2></span>
+
+   Clients are usually manually configured with the address of a HKP
+   keyserver.  Client implementors should be aware that it is
+   reasonably common practice to use a single name in DNS that
+   resolves to multiple address records.  When receiving a DNS
+   response with multiple addresses, clients SHOULD try each address
+   until a server is reached.  The order to try these addresses in is
+   implementation defined.
+
+   A far more flexible scheme for listing multiple HKP keyservers in
+   DNS is the use of DNS SRV records as specified in <a href="http://tools.ietf.org/html/rfc2782">RFC-2782</a> [<a href="#ref-5" title="&quot;A DNS RR for specifying the location of services (DNS SRV)&quot;">5</a>].
+   DNS SRV allows for different priorities and weights to be applied
+   to each HKP keyserver in the list, which allows an administrator
+   much more control over how clients will contact the servers.  The
+   SRV symbolic service name for HKP keyservers is "hkp".  For
+   example, the SRV record for HKP keyservers in domain "example.com"
+   would be "_hkp._tcp.example.com".
+
+   SRV records contain the port that the target server runs on, so SRV
+   can also be used to automatically discover the proper port for
+   contacting a HKP keyserver.
+
+   An additional use of SRV records is when a client needs to locate a
+   specified key by email address.  For example, a client trying to
+   locate a key for isabella@silvie.example.com could consult
+   "_hkp._tcp.silvie.example.com".
+
+   HKP clients SHOULD support SRV records.
+
+<span class="h2"><h2><a class="selflink" name="section-8" href="#section-8">8</a>. Security Considerations</h2></span>
+
+   As described here, a keyserver is a searchable database of public
+   keys accessed over the network.  While there may be security
+   considerations arising from distributing keys in this manner, this
+   does not impact the security of OpenPGP itself.
+
+   Without some sort of trust relationship between the client and
+   server, information returned from a keyserver in search results
+   cannot be trusted by the client until the OpenPGP client actually
+   retrieves and checks the key for itself.  This is important and
+   must be stressed: without a specific reason to treat information
+   otherwise, all search results must be regarded as untrustworthy and
+   informational only.
+
+<span class="h2"><h2><a class="selflink" name="section-9" href="#section-9">9</a>. IANA Considerations</h2></span>
+
+   This document assigns the DNS SRV symbolic name "hkp".
+
+<span class="h2"><h2><a class="selflink" name="section-10" href="#section-10">10</a>. Normative References</h2></span>
+
+<span class="grey">Shaw                                                            [Page 9]</span>
+</pre><!--NewPage--><pre class="newpage"><a name="page-10" id="page-10" href="#page-10" class="invisible"> </a>
+<span class="grey">Internet-Draft        OpenPGP HTTP Keyserver Protocol         March 2003</span>
+
+
+   [<a name="ref-1" id="ref-1">1</a>]         S. Bradner, "Key words for use in RFCs to Indicate
+               Requirement Level", <a href="http://tools.ietf.org/html/bcp14">BCP 14</a>, <a href="http://tools.ietf.org/html/rfc2119">RFC 2119</a>, March 1997.
+
+   [<a name="ref-2" id="ref-2">2</a>]         T. Berners-Lee, "Hypertext Transfer Protocol 1.0",
+               <a href="http://tools.ietf.org/html/rfc1945">RFC 1945</a>, May 1996.
+
+   [<a name="ref-3" id="ref-3">3</a>]         T. Berners-Lee, "Hypertext Markup Language - 2.0",
+               <a href="http://tools.ietf.org/html/rfc1866">RFC 1866</a>, November 1995.
+
+   [<a name="ref-4" id="ref-4">4</a>]         J. Callas, L. Donnerhacke, H. Finney and R. Thayer,
+               "OpenPGP Message Format", <a href="http://tools.ietf.org/html/rfc2440">RFC 2440</a>, November 1998.
+
+   [<a name="ref-5" id="ref-5">5</a>]         A. Gulbrandsen, P. Vixie, and L. Esibov, "A DNS RR for
+               specifying the location of services (DNS SRV)", <a href="http://tools.ietf.org/html/rfc2782">RFC</a>
+               <a href="http://tools.ietf.org/html/rfc2782">2782</a>, February 2000.
+
+   [<a name="ref-6" id="ref-6">6</a>]         M. Elkins, D. Del Torto, R. Levien, and T. Roessler,
+               "MIME Security with OpenPGP", <a href="http://tools.ietf.org/html/rfc3156">RFC 3156</a>, August 2001.
+
+<span class="h2"><h2><a class="selflink" name="section-11" href="#section-11">11</a>. Author's Address</h2></span>
+
+   David Shaw
+   16 Farina Road
+   Newton, MA  02459
+
+   Email: dshaw@jabberwocky.com
+   Tel:   +1 (617) 332-8443
+
+   This document is a formalization and extension of the HKP
+   originally implemented in the PKS keyserver by Marc Horowitz, which
+   in turn was based on earlier work by Brian LaMacchia and Michael
+   Graff.  Without their grounding, this document would not exist.
+
+   The author would also like to thank Peter Gutmann for his work on
+   the Certstore protocol, some of which was applicable here, and the
+   members of the pgp-keyserver-folk mailing list who contributed
+   valuable comments and suggestions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Shaw                                                           [Page 10]
+
+</pre><br>
+<span class="noprint"><small><small>Html markup produced by rfcmarkup 1.109, available from
+<a href="https://tools.ietf.org/tools/rfcmarkup/">https://tools.ietf.org/tools/rfcmarkup/</a>
+</small></small></span>
+
+</body></html>

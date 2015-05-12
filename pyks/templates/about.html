@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}PyKS - About {% endblock %}
+{% block navbar_about_active %}class="active"{% endblock %}
+{% block content %}
+
+<h1>{{ self.title() }}</h1>
+
+<p>2015 by David Lukas Müller. The source code is available at <a href="https://github.com/dlmueller/pyks-keyserver">github</a>.</p>
+
+<p>environment details:
+currentWorkingDirectory = {{ currentWorkingDirectory }}
+</p>
+
+<p>storing data in SQLite data base at
+databasePath = {{ databasePath }},
+schemaVersion = {{ schemaVersion }},
+schemaFile = {{ schemaFile}}.
+</p>
+
+<p>using PGPy by Matthew Green (github)
+version = {{ pgpyVersion }},
+path = {{ pgpyPath }}
+</p>
+{% endblock %}

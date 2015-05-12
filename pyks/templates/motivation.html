@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block title %}Motivation{% endblock %}
+{% block navbar_motivation_active %}class="active"{% endblock %}
+{% block content %}
+
+<h1>{{ self.title() }}</h1>
+
+<p>Current main stream key servers like <a href="">SKS - Synchronizing Key Server</a>
+or <a href="">PKS - Public Key Servers</a> also synchronize their databases
+so it doesn't matter which concrete keyserver you connect to they all have
+the same data.</p>
+
+<p>While this seems to be all you have to expect from a key server at a first look
+there are some drawbacks with the current Public Key Infrastructure (PKI) and the
+OpenPGP Web-of-Trust (WoT):</p>
+
+  <!-- Example row of columns -->
+  <div class="row">
+
+    <div class="col-lg-4">
+      <h2>Harvesting e-mail addresses</h2>
+<!--
+      <p class="text-danger">As of v7.0.1, Safari exhibits a bug in 
+which resizing your browser horizontally causes rendering errors in the 
+justified nav that are cleared upon refreshing.</p>
+-->
+      <p>Your public key certificate contains information about your 
+identity, i.e your e-mail address and usually your full name. The 
+distribution of your public key certificate accross a global network of 
+synchronized keyservers distributes your e-mail address accross the 
+internet. <b>This make it possible for Spammers etc. to harvest those data</b>.
+An empirical evaluation of this kind of threat you can find in the
+<a href="http://www.spamschlucker.org/spamdex/spam/comments/pgp-keyserver">pgp-keyserver article at spamschlucker.org</a>.</p>  
+      <p><a class="btn btn-primary" href="#" role="button">View details »</a></p>
+    </div>
+
+    <div class="col-lg-4">
+      <h2>Social network graph</h2>
+      <p>Your public key certificate contains information about those people 
+that have signed your key. With this information (at least their pulblic
+key IDs) one can determine their identities (e-mail address plus their 
+real names). 
+Furthermore anyone who is able to read/record your
+internet traffic could also analyze your traffic from and to a public key server.
+With this information one can build a <i>social network graph</i>
+that allows the computation of your direct contacts and the people you 
+know only indirect via persons you know and so on. That can information 
+can be used to collect communication meta data of all people a surveiled
+target person might know.</p>
+      <p><a class="btn btn-primary" href="#" role="button">View details »</a></p>
+   </div>
+
+    <div class="col-lg-4">
+      <h2>Authenticity</h2>
+      <p>How do you know that the public key of 'your.friend@example.org' does
+belong to your friend? 
+Can you be sure that e-mail address was not set up from an adversatary?</p>
+      <p><a class="btn btn-primary" href="#" role="button">View details »</a></p>
+    </div>
+  </div>
+
+{% endblock %}

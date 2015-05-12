@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block title %}PyKS - Local Index {% endblock %}
+{% block navbar_home_active %}class="active"{% endblock %}
+{% block content %}
+
+<h1>{{ self.title() }}</h1>
+
+<p>Welcome to PyKS - <b>Proxy your Key Servers</b>.
+This is a locals proxy to provide key services to your existing OpenPGP
+clients like query for public key certificates of your known contacts, 
+check if their public key certificate is still valid or already revoced 
+etc. The <b>OpenPGP HTTP Keyserver Protocol (HKP)</b> allows OpenPGP clients 
+to interoperate with different keyserver implementations. You can learn more
+about the HKP in the <a href="http://localhost:11371/test_cases">Test Cases</a>
+section.</p>
+
+You can look at the <a href="http://localhost:11371/pks/lookup?op=index">locally stored data </a>
+that can be queried by your OpenPGP client.
+
+Later you can also look at the </a><a href="http://localhost:11371/remote_db">remote stored data</a>.
+
+Read about my <a href="/motivation">motivation</a> and <a href="/related_work">related work</a>
+I've encounterned during my recherche. To understand the treat-model you should also
+have a look at some <a href="/background">background information</a> regarding surveilance.
+
+
+  <!-- Example row of columns -->
+  <div class="row">
+    <div class="col-lg-4">
+      <h2>First Test Heading</h2>
+      <p class="text-danger">This is an important hint.</p>
+      <p>Donec id elit non mi porta gravida at eget metus. Fusce 
+dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut 
+fermentum massa justo sit amet risus. Etiam porta sem malesuada magna 
+mollis euismod. Donec sed odio dui. </p>
+      <p><a class="btn btn-primary" href="#" role="button">View details »</a></p>
+    </div>
+    <div class="col-lg-4">
+      <h2>Second Heading</h2>
+      <p>Donec id elit non mi porta gravida at eget metus. Fusce 
+dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut 
+fermentum massa justo sit amet risus. Etiam porta sem malesuada magna 
+mollis euismod. Donec sed odio dui. </p>
+      <p><a class="btn btn-primary" href="#" role="button">View details »</a></p>
+   </div>
+    <div class="col-lg-4">
+      <h2>Third Heading</h2>
+      <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis 
+in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. 
+Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh,
+ut fermentum massa.</p>
+      <p><a class="btn btn-primary" href="#" role="button">View details »</a></p>
+    </div>
+  </div>
+
+{% endblock %}
