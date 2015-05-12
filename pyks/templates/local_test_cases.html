@@ -311,6 +311,12 @@ Alternative all stored keys can be listed via:
     </a>
     </li>
 
+    <li>
+    <a href="http://127.0.0.1:11371/pks/lookup?op=index&amp;exact=off">
+        <code>/pks/lookup op=index exact=off</code>
+    </a> (HTML-View)
+    </li>
+
 </ul>
 </p>
 
@@ -372,8 +378,8 @@ See <a href="static/specs/draft-shaw-openpgp-hkp-00.html#section-3.1.2.1">HKP Sp
     </li>
     <li>
     <a href="http://127.0.0.1:11371/pks/lookup?op=get&amp;options=hexview&amp;exact=off&amp;search=0xFBB75451">
-        <code>/pks/lookup op=get options=hexview exact=off search=0xFBB75451</code> (this option is NOT part of HKP!)
-    </a>
+        <code>/pks/lookup op=get options=hexview exact=off search=0xFBB75451</code>
+    </a> (this option is NOT part of HKP!)
     </li>
 </ul>
 
@@ -431,6 +437,13 @@ Local tests:
         <code>/pks/lookup op=vindex options=mr exact=off search=0xFBB75451</code>
     </a>
     </li>
+
+    <li>
+    <a href="http://127.0.0.1:11371/pks/lookup?op=vindex&amp;exact=off&amp;">
+        <code>/pks/lookup op=vindex exact=off</code>
+    </a> (HTML-View)
+    </li>
+
 </ul>
 
 Remote SKS tests
